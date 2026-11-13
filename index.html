@@ -1,0 +1,537 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cryovex Gift String Lab</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg:#050815;
+  --panel:#10182b;
+  --border:rgba(255,255,255,.09);
+  --cyan:#3ee8e0;
+  --blue:#4f8bff;
+  --purple:#a76bff;
+  --green:#3cf0a0;
+  --red:#ff5d7a;
+  --text:#eef2fb;
+  --muted:#8d98b3;
+}
+*{box-sizing:border-box}
+body {
+  margin:0;
+  min-height:100vh;
+  background:
+    radial-gradient(ellipse at 10% 0%,#123052 0%,transparent 40%),
+    radial-gradient(ellipse at 100% 10%,#28134a 0%,transparent 40%),
+    var(--bg);
+  color:var(--text);
+  font-family:Inter,sans-serif;
+}
+button,input,select{font:inherit}
+.shell{max-width:1300px;margin:auto;padding:25px}
+header {
+  display:flex;justify-content:space-between;align-items:center;
+  padding:20px;background:rgba(16,24,43,.8);
+  border:1px solid var(--border);border-radius:18px;
+  margin-bottom:25px;gap:15px;
+}
+.brand{display:flex;align-items:center;gap:14px}
+.logo {
+  width:48px;height:48px;border-radius:13px;
+  display:grid;place-items:center;font-size:24px;
+  background:linear-gradient(135deg,#3ee8e033,#a76bff33);
+  border:1px solid #3ee8e055;
+}
+h1{font-size:20px;margin:0;font-family:"Space Grotesk"}
+.subtitle{font-size:12px;color:var(--muted);margin-top:5px}
+.online {
+  color:var(--green);font-size:12px;font-weight:700;
+  background:#3cf0a014;border:1px solid #3cf0a044;
+  padding:9px 13px;border-radius:30px;
+}
+.tabs{display:flex;gap:10px;margin-bottom:22px;flex-wrap:wrap}
+.tab {
+  padding:12px 20px;border-radius:11px;
+  background:#ffffff08;color:var(--muted);
+  border:1px solid var(--border);cursor:pointer;
+}
+.tab.active {
+  color:white;border-color:var(--cyan);
+  background:#3ee8e01a;
+}
+.stats {
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:13px;margin-bottom:22px;
+}
+.stat,.panel {
+  background:rgba(16,24,43,.8);
+  border:1px solid var(--border);
+  border-radius:16px;padding:20px;
+}
+.stat-label{font-size:11px;color:var(--muted);font-weight:700}
+.stat-value{font-size:27px;font-weight:700;margin-top:8px;font-family:"Space Grotesk"}
+.cyan{color:var(--cyan)}
+.green{color:var(--green)}
+.purple{color:var(--purple)}
+.red{color:var(--red)}
+.layout{display:grid;grid-template-columns:350px 1fr;gap:18px;align-items:start}
+.view{display:none}
+.view.active{display:block}
+h2{font-size:16px;margin:0 0 18px;font-family:"Space Grotesk"}
+.field{margin-bottom:19px}
+label{display:block;font-size:12px;color:var(--muted);font-weight:600;margin-bottom:8px}
+input[type=number],select {
+  width:100%;padding:12px;background:#080e1d;
+  border:1px solid var(--border);border-radius:9px;color:white;
+}
+input[type=range]{width:100%;accent-color:var(--cyan)}
+.value{float:right;color:var(--cyan)}
+.checkbox{display:flex;align-items:center;gap:9px;margin:15px 0;color:var(--muted);font-size:13px}
+button{transition:.2s}
+.action {
+  padding:12px 16px;border:0;border-radius:10px;
+  background:linear-gradient(110deg,var(--cyan),var(--blue));
+  color:#04111a;font-weight:700;cursor:pointer;
+}
+.action:hover{filter:brightness(1.12);transform:translateY(-1px)}
+.secondary {
+  background:#ffffff0b;color:white;border:1px solid var(--border);
+}
+.danger{background:#ff5d7a;color:white}
+.full{width:100%}
+.buttons{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+.console {
+  background:#030713;border:1px solid var(--border);
+  border-radius:12px;padding:13px;min-height:370px;
+  max-height:520px;overflow:auto;
+}
+.output {
+  display:flex;align-items:center;gap:10px;
+  padding:11px;margin-bottom:7px;
+  background:#ffffff06;border:1px solid #ffffff0b;
+  border-radius:9px;
+}
+.output code {
+  flex:1;word-break:break-all;color:var(--cyan);
+  font:12px "JetBrains Mono",monospace;
+}
+.copy {
+  background:#ffffff0c;border:1px solid var(--border);
+  color:white;border-radius:7px;padding:7px 10px;
+  cursor:pointer;font-size:11px;
+}
+.empty{text-align:center;padding:100px 15px;color:var(--muted);font-size:13px}
+.notice {
+  padding:13px 15px;margin-bottom:18px;
+  background:#ffc24b0d;border:1px solid #ffc24b44;
+  color:#c9cfe0;border-radius:11px;
+  font-size:12px;line-height:1.7;
+}
+textarea {
+  width:100%;min-height:170px;padding:13px;
+  resize:vertical;background:#030713;
+  color:white;border:1px solid var(--border);
+  border-radius:10px;font:13px "JetBrains Mono",monospace;
+}
+.result {
+  padding:13px;margin-top:10px;border:1px solid var(--border);
+  background:#ffffff06;border-radius:10px;font-size:12px;
+  overflow-wrap:anywhere;
+}
+.valid{color:var(--green)}
+.invalid{color:var(--red)}
+footer {
+  text-align:center;color:var(--muted);
+  font-size:11px;padding:30px 10px;line-height:1.8;
+}
+@media(max-width:850px){
+  .layout{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:500px){
+  .shell{padding:12px}
+  header{align-items:flex-start;flex-direction:column}
+  .stats{gap:8px}
+  .stat{padding:13px}
+  .stat-value{font-size:22px}
+}
+</style>
+</head>
+
+<body>
+<div class="shell">
+
+<header>
+  <div class="brand">
+    <div class="logo">✦</div>
+    <div>
+      <h1>Cryovex Gift String Lab</h1>
+      <div class="subtitle">Gift-link test generator & format validator</div>
+    </div>
+  </div>
+  <div class="online">● SYSTEM ONLINE</div>
+</header>
+
+<nav class="tabs">
+  <button class="tab active" data-tab="generator">Generator</button>
+  <button class="tab" data-tab="validator">Link Validator</button>
+</nav>
+
+<section class="stats">
+  <div class="stat">
+    <div class="stat-label">STRINGS GENERATED</div>
+    <div class="stat-value cyan" id="generated">0</div>
+  </div>
+  <div class="stat">
+    <div class="stat-label">LINKS CHECKED</div>
+    <div class="stat-value" id="checked">0</div>
+  </div>
+  <div class="stat">
+    <div class="stat-label">VALID FORMAT</div>
+    <div class="stat-value green" id="valid">0</div>
+  </div>
+  <div class="stat">
+    <div class="stat-label">INVALID FORMAT</div>
+    <div class="stat-value red" id="invalid">0</div>
+  </div>
+</section>
+
+<section class="view active" id="generator">
+<div class="layout">
+
+<div class="panel">
+<h2>Generation Settings</h2>
+
+<div class="field">
+<label>Code character set</label>
+<select id="charset">
+<option value="ABCDEFGHJKLMNPQRSTUVWXYZ23456789">A-Z and 0-9</option>
+<option value="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789">Uppercase, lowercase and numbers</option>
+<option value="0123456789">Numbers only</option>
+<option value="0123456789ABCDEF">Hexadecimal</option>
+</select>
+</div>
+
+<div class="field">
+<label>Code length <span class="value" id="lengthValue">16</span></label>
+<input type="range" id="length" min="4" max="48" value="16">
+</div>
+
+<div class="field">
+<label>Number of test links</label>
+<input type="number" id="amount" min="1" max="500" value="10">
+</div>
+
+<div class="checkbox">
+<input type="checkbox" id="dedupe" checked>
+<label style="margin:0">Skip duplicate strings</label>
+</div>
+
+<div class="checkbox">
+<input type="checkbox" id="prefix" checked>
+<label style="margin:0">Add discord.gift/ prefix</label>
+</div>
+
+<button class="action full" id="generate">Generate test links</button>
+
+<div class="buttons">
+<button class="action secondary full" id="clear">Clear output</button>
+</div>
+</div>
+
+<div class="panel">
+<h2>Generated Output</h2>
+<div class="buttons" style="margin-bottom:15px">
+<button class="action secondary" id="copyAll">Copy all</button>
+<button class="action secondary" id="export">Export TXT</button>
+</div>
+<div class="console" id="output">
+<div class="empty">Your generated test links will appear here.</div>
+</div>
+</div>
+
+</div>
+</section>
+
+<section class="view" id="validator">
+
+<div class="notice">
+<strong>Important:</strong> This validator checks URL structure only. It cannot contact Discord or establish whether a gift code exists, is available, or can be redeemed.
+</div>
+
+<div class="layout">
+
+<div class="panel">
+<h2>Link Validator</h2>
+<div class="field">
+<label>Paste Discord gift links (one per line)</label>
+<textarea id="links" placeholder="https://discord.gift/ExampleTestCode123"></textarea>
+</div>
+<button class="action full" id="check">Check link formats</button>
+<button class="action secondary full" style="margin-top:10px" id="clearResults">Clear results</button>
+</div>
+
+<div class="panel">
+<h2>Validation Results</h2>
+<div id="results">
+<div class="empty">No links checked yet.</div>
+</div>
+</div>
+
+</div>
+</section>
+
+<footer>
+<strong>Cryovex Gift String Lab</strong><br>
+This website generates random test strings, not genuine Discord Nitro gift codes.<br>
+A valid format does not mean a gift exists or is redeemable.
+</footer>
+
+</div>
+
+<script>
+"use strict";
+
+const $ = id => document.getElementById(id);
+
+let strings = [];
+let generatedCount = 0;
+let checkedCount = 0;
+let validCount = 0;
+let invalidCount = 0;
+
+function updateStats(){
+  $("generated").textContent = generatedCount;
+  $("checked").textContent = checkedCount;
+  $("valid").textContent = validCount;
+  $("invalid").textContent = invalidCount;
+}
+
+document.querySelectorAll(".tab").forEach(button=>{
+  button.addEventListener("click",()=>{
+    document.querySelectorAll(".tab").forEach(b=>b.classList.remove("active"));
+    document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
+
+    button.classList.add("active");
+    $(button.dataset.tab).classList.add("active");
+  });
+});
+
+$("length").addEventListener("input",()=>{
+  $("lengthValue").textContent = $("length").value;
+});
+
+function randomCode(length,charset){
+  const bytes = new Uint8Array(length);
+  crypto.getRandomValues(bytes);
+
+  return Array.from(bytes,b=>charset[b % charset.length]).join("");
+}
+
+async function copyText(text){
+  try{
+    await navigator.clipboard.writeText(text);
+    return true;
+  }catch(error){
+    const area=document.createElement("textarea");
+    area.value=text;
+    document.body.appendChild(area);
+    area.select();
+    const success=document.execCommand("copy");
+    area.remove();
+    return success;
+  }
+}
+
+function addOutput(value,index){
+  const container=$("output");
+  if(container.querySelector(".empty")) container.innerHTML="";
+
+  const row=document.createElement("div");
+  row.className="output";
+
+  const code=document.createElement("code");
+  code.textContent=value;
+
+  const copy=document.createElement("button");
+  copy.className="copy";
+  copy.textContent="Copy";
+
+  copy.addEventListener("click",async()=>{
+    const success=await copyText(value);
+    copy.textContent=success?"Copied!":"Failed";
+  });
+
+  row.append(code,copy);
+  container.appendChild(row);
+}
+
+$("generate").addEventListener("click",()=>{
+  const amount=Math.min(500,Math.max(1,Number($("amount").value)||1));
+  const length=Number($("length").value);
+  const charset=$("charset").value;
+  const dedupe=$("dedupe").checked;
+  const usePrefix=$("prefix").checked;
+
+  let produced=0;
+  let attempts=0;
+
+  while(produced<amount && attempts<amount*100+100){
+    attempts++;
+
+    const code=randomCode(length,charset);
+
+    if(dedupe && strings.some(s=>s===code)) continue;
+
+    strings.push(code);
+
+    const link=usePrefix
+      ?"https://discord.gift/"+code
+      :code;
+
+    generatedCount++;
+    produced++;
+    addOutput(link,generatedCount);
+  }
+
+  updateStats();
+});
+
+$("copyAll").addEventListener("click",async()=>{
+  if(!strings.length)return;
+
+  const prefix=$("prefix").checked;
+  const text=strings.map(s=>
+    prefix?"https://discord.gift/"+s:s
+  ).join("\n");
+
+  const success=await copyText(text);
+  $("copyAll").textContent=success?"Copied!":"Copy failed";
+
+  setTimeout(()=>{$("copyAll").textContent="Copy all"},1500);
+});
+
+$("export").addEventListener("click",()=>{
+  if(!strings.length)return;
+
+  const prefix=$("prefix").checked;
+  const content=strings.map(s=>
+    prefix?"https://discord.gift/"+s:s
+  ).join("\n");
+
+  const blob=new Blob([content],{type:"text/plain"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+
+  a.href=url;
+  a.download="cryovex-test-links.txt";
+  a.click();
+
+  URL.revokeObjectURL(url);
+});
+
+$("clear").addEventListener("click",()=>{
+  strings=[];
+  $("output").innerHTML='<div class="empty">Your generated test links will appear here.</div>';
+});
+
+function validateLink(value){
+  try{
+    const url=new URL(value.trim());
+
+    const allowedHosts=[
+      "discord.gift",
+      "www.discord.gift",
+      "discord.com",
+      "www.discord.com",
+      "discordapp.com",
+      "www.discordapp.com"
+    ];
+
+    if(!allowedHosts.includes(url.hostname.toLowerCase())){
+      return {valid:false,reason:"Unrecognised domain"};
+    }
+
+    if(url.protocol!=="https:" && url.protocol!=="http:"){
+      return {valid:false,reason:"Unsupported protocol"};
+    }
+
+    const path=url.pathname.split("/").filter(Boolean);
+
+    const correctPath=
+      url.hostname.toLowerCase().includes("discord.gift")
+        ?path.length===1
+        :path.length===2 && path[0].toLowerCase()==="gifts";
+
+    if(!correctPath){
+      return {valid:false,reason:"Incorrect gift-link path"};
+    }
+
+    const code=path[path.length-1];
+
+    if(!/^[A-Za-z0-9]+$/.test(code)){
+      return {valid:false,reason:"Invalid code characters"};
+    }
+
+    if(![16,20,24].includes(code.length)){
+      return {valid:false,reason:"Unexpected code length"};
+    }
+
+    return {valid:true,reason:"Recognised link format"};
+  }catch(error){
+    return {valid:false,reason:"Invalid URL"};
+  }
+}
+
+$("check").addEventListener("click",()=>{
+  const lines=$("links").value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+
+  if(!lines.length)return;
+
+  $("results").innerHTML="";
+
+  lines.forEach(link=>{
+    const result=validateLink(link);
+
+    checkedCount++;
+
+    if(result.valid)validCount++;
+    else invalidCount++;
+
+    const card=document.createElement("div");
+    card.className="result";
+
+    const url=document.createElement("div");
+    url.textContent=link;
+    url.style.marginBottom="9px";
+
+    const status=document.createElement("strong");
+    status.className=result.valid?"valid":"invalid";
+    status.textContent=result.valid?"VALID FORMAT":"INVALID FORMAT";
+
+    const reason=document.createElement("div");
+    reason.textContent=result.reason+" — Not verified by Discord.";
+    reason.style.color="#8d98b3";
+    reason.style.marginTop="7px";
+
+    card.append(url,status,reason);
+    $("results").appendChild(card);
+  });
+
+  updateStats();
+});
+
+$("clearResults").addEventListener("click",()=>{
+  $("results").innerHTML='<div class="empty">No links checked yet.</div>';
+  $("links").value="";
+});
+
+updateStats();
+</script>
+
+</body>
+</html>
